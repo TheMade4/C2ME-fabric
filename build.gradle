@@ -127,7 +127,6 @@ configure (allprojects - project(":tests")) {
         implementation "com.github.LlamaLad7:MixinExtras:${mixinextras_version}"
         implementation "com.ishland.flowsched:flowsched"
 
-        annotationProcessor "com.github.LlamaLad7:MixinExtras:${mixinextras_version}"
     }
 }
 
@@ -156,7 +155,6 @@ dependencies {
     include implementation("com.electronwill.night-config:core:${night_config_version}")
     include implementation("org.threadly:threadly:${threadly_version}")
     include implementation("net.objecthunter:exp4j:${exp4j_version}")
-//    include implementation("com.ishland.flowsched:flowsched")
 
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
