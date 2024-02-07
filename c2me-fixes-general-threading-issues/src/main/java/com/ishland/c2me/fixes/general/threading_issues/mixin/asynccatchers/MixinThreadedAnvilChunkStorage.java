@@ -19,18 +19,14 @@ public class MixinThreadedAnvilChunkStorage {
     @Inject(method = "loadEntity", at = @At("HEAD"))
     private void preventAsyncEntityLoad(CallbackInfo ci) {
         if (!this.mainThreadExecutor.isOnThread()) {
-            final ConcurrentModificationException e = new ConcurrentModificationException("Async entity load");
-            e.printStackTrace();
-            throw e;
+            throw new ConcurrentModificationException("Async entity load");
         }
     }
 
     @Inject(method = "unloadEntity", at = @At("HEAD"))
     private void preventAsyncEntityUnload(CallbackInfo ci) {
         if (!this.mainThreadExecutor.isOnThread()) {
-            final ConcurrentModificationException e = new ConcurrentModificationException("Async entity unload");
-            e.printStackTrace();
-            throw e;
+            throw new ConcurrentModificationException("Async entity unload");
         }
     }
 
