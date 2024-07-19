@@ -51,17 +51,17 @@ public abstract class MixinThreadedAnvilChunkStorage {
         runnable.run();
     }
 
-    @Inject(method = "method_17225", at = @At("HEAD"))
-    private void captureUpgradingChunkHolder(ChunkPos chunkPos, ChunkHolder chunkHolder, ChunkStatus chunkStatus, Executor executor, List<Chunk> chunks, CallbackInfoReturnable<CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>>> cir) {
+    @Inject(method = "lambda$scheduleChunkGeneration$27(Lnet/minecraft/world/level/chunk/ChunkStatus;Lnet/minecraft/server/level/ChunkHolder;Ljava/util/concurrent/Executor;Lnet/minecraft/world/level/ChunkPos;Ljava/util/List;)Ljava/util/concurrent/CompletableFuture;", at = @At("HEAD"))
+    private void captureUpgradingChunkHolder(ChunkStatus chunkStatus, ChunkHolder chunkHolder, Executor executor, ChunkPos chunkPos, List<Chunk> chunks, CallbackInfoReturnable<CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>>> cir) {
         ThreadLocalWorldGenSchedulingState.setChunkHolder(chunkHolder);
     }
 
-    @Inject(method = "method_17225", at = @At("RETURN"))
+    @Inject(method = "lambda$scheduleChunkGeneration$27(Lnet/minecraft/world/level/chunk/ChunkStatus;Lnet/minecraft/server/level/ChunkHolder;Ljava/util/concurrent/Executor;Lnet/minecraft/world/level/ChunkPos;Ljava/util/List;)Ljava/util/concurrent/CompletableFuture;", at = @At("RETURN"))
     private void resetUpgradingChunkHolder(CallbackInfoReturnable<CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>>> cir) {
         ThreadLocalWorldGenSchedulingState.clearChunkHolder();
     }
 
-    @Inject(method = "method_17225", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/crash/CrashReport;create(Ljava/lang/Throwable;Ljava/lang/String;)Lnet/minecraft/util/crash/CrashReport;", shift = At.Shift.BEFORE))
+    @Inject(method = "lambda$scheduleChunkGeneration$27(Lnet/minecraft/world/level/chunk/ChunkStatus;Lnet/minecraft/server/level/ChunkHolder;Ljava/util/concurrent/Executor;Lnet/minecraft/world/level/ChunkPos;Ljava/util/List;)Ljava/util/concurrent/CompletableFuture;", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/crash/CrashReport;create(Ljava/lang/Throwable;Ljava/lang/String;)Lnet/minecraft/util/crash/CrashReport;", shift = At.Shift.BEFORE))
     private void resetUpgradingChunkHolderExceptionally(CallbackInfoReturnable<CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>>> cir) {
         ThreadLocalWorldGenSchedulingState.clearChunkHolder();
     }
