@@ -1,7 +1,4 @@
 
-https://github.com/RelativityMC/C2ME-fabric/commit/19aee14b3250c33347dc2a189e6078997eccc06f
-https://github.com/RelativityMC/C2ME-fabric/commit/d801a3b495aaa3865ea821926e87c4aef3da2fb0
-https://github.com/RelativityMC/C2ME-fabric/commit/88a605cc244a2c3f4c2d3321ea9c0c0b78715d9b
 https://github.com/RelativityMC/C2ME-fabric/commit/4a0a3201d1b7032295644e85a9a9f0c2610e6733
 https://github.com/RelativityMC/C2ME-fabric/commit/a864fab4d55d73d20fbc9fe853533c08cf4dcab8
 https://github.com/RelativityMC/C2ME-fabric/commit/95e458098a063b95ae91c3c33d4b817ae836a7cd
