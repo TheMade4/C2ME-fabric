@@ -71,7 +71,7 @@ public abstract class MixinThreadedAnvilChunkStorage {
      * @reason dont send chunks twice
      */
     @Overwrite
-    private void method_17243(MutableObject<ChunkDataS2CPacket> mutableObject, WorldChunk worldChunk, ServerPlayerEntity player) {
+    public void method_17243(MutableObject<ChunkDataS2CPacket> mutableObject, WorldChunk worldChunk, ServerPlayerEntity player) {
         if (Config.ensureChunkCorrectness && NoTickChunkSendingInterceptor.onChunkSending(player, worldChunk.getPos().toLong()))
             this.sendChunkDataPackets(player, mutableObject, worldChunk);
     }

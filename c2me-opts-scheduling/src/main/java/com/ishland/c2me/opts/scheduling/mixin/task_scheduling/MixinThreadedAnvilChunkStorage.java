@@ -71,7 +71,7 @@ public class MixinThreadedAnvilChunkStorage implements IThreadedAnvilChunkStorag
     @SuppressWarnings("OverwriteTarget")
     @Dynamic
     @Overwrite
-    private void method_17252(ChunkHolder holder, Runnable runnable) {
+    public void method_17252(ChunkHolder holder, Runnable runnable) {
         this.mainInvokingExecutor.execute(runnable);
     }
 
@@ -85,7 +85,7 @@ public class MixinThreadedAnvilChunkStorage implements IThreadedAnvilChunkStorag
     @SuppressWarnings("OverwriteTarget")
     @Dynamic
     @Overwrite
-    private void method_19487(ChunkHolder holder, Runnable runnable) {
+    public void method_19487(ChunkHolder holder, Runnable runnable) {
         this.mainInvokingExecutor.execute(runnable);
     }
 
@@ -99,7 +99,7 @@ public class MixinThreadedAnvilChunkStorage implements IThreadedAnvilChunkStorag
     @SuppressWarnings("OverwriteTarget")
     @Dynamic
     @Overwrite
-    private void method_19486(ChunkHolder holder, Runnable runnable) {
+    public void method_19486(ChunkHolder holder, Runnable runnable) {
         this.mainInvokingExecutor.execute(runnable);
     }
 
@@ -113,7 +113,7 @@ public class MixinThreadedAnvilChunkStorage implements IThreadedAnvilChunkStorag
     @SuppressWarnings("OverwriteTarget")
     @Dynamic
     @Overwrite
-    private void method_20579(ChunkHolder holder, Runnable runnable) {
+    public void method_20579(ChunkHolder holder, Runnable runnable) {
         this.mainInvokingExecutor.execute(runnable);
     }
 

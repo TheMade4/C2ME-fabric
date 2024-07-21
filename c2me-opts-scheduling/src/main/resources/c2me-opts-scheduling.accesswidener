@@ -1,3 +1,7 @@
 accessWidener v1 named
 
 accessible    class    net/minecraft/server/world/ThreadedAnvilChunkStorage$TicketManager
+accessible    method   net/minecraft/server/world/ThreadedAnvilChunkStorage method_17252 (Lnet/minecraft/server/world/ChunkHolder;Ljava/lang/Runnable;)V
+accessible    method   net/minecraft/server/world/ThreadedAnvilChunkStorage method_19487 (Lnet/minecraft/server/world/ChunkHolder;Ljava/lang/Runnable;)V
+accessible    method   net/minecraft/server/world/ThreadedAnvilChunkStorage method_19486 (Lnet/minecraft/server/world/ChunkHolder;Ljava/lang/Runnable;)V
+accessible    method   net/minecraft/server/world/ThreadedAnvilChunkStorage method_20579 (Lnet/minecraft/server/world/ChunkHolder;Ljava/lang/Runnable;)V

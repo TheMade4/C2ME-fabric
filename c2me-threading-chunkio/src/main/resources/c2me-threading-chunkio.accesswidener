@@ -1,0 +1,3 @@
+accessWidener v1 named
+
+accessible    method   net/minecraft/server/world/ThreadedAnvilChunkStorage loadChunk (Lnet/minecraft/util/math/ChunkPos;)Ljava/util/concurrent/CompletableFuture;

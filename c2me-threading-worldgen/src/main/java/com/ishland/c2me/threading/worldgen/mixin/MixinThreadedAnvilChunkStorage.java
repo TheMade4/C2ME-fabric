@@ -47,7 +47,7 @@ public abstract class MixinThreadedAnvilChunkStorage {
     @SuppressWarnings("OverwriteTarget")
     @Dynamic
     @Overwrite
-    private void method_17259(ChunkHolder chunkHolder, Runnable runnable) { // synthetic method for worldGenExecutor scheduling in upgradeChunk
+    public void method_17259(ChunkHolder chunkHolder, Runnable runnable) { // synthetic method for worldGenExecutor scheduling in upgradeChunk
         runnable.run();
     }
 
