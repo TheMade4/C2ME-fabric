@@ -284,7 +284,7 @@ public abstract class MixinAquiferSamplerImpl {
         DensityFunction.UnblendedNoisePos unblendedNoisePos = new DensityFunction.UnblendedNoisePos(blockX, blockY, blockZ);
         double d;
         double e;
-        if (VanillaBiomeParameters.inDeepDarkParameters(this.erosionDensityFunction, this.depthDensityFunction, unblendedNoisePos)) {
+        if (VanillaBiomeParameters.method_43718(this.erosionDensityFunction, this.depthDensityFunction, unblendedNoisePos)) {
             d = -1.0;
             e = -1.0;
         } else {
