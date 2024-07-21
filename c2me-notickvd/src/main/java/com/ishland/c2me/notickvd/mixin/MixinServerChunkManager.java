@@ -25,12 +25,12 @@ public class MixinServerChunkManager {
 //        return chunkHolder.getAccessibleFuture();
 //    }
 
-
-    @WrapOperation(method = "tickChunks", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;iterateEntities()Ljava/lang/Iterable;"))
-    private Iterable<Entity> redirectIterateEntities(ServerWorld serverWorld, Operation<Iterable<Entity>> op) {
-        final LongSet noTickOnlyChunks = ((IChunkTicketManager) this.ticketManager).getNoTickOnlyChunks();
-        if (noTickOnlyChunks == null) return op.call(serverWorld);
-        return new FilteringIterable<>(op.call(serverWorld), entity -> !noTickOnlyChunks.contains(entity.getChunkPos().toLong()));
-    }
+    // TODO: Fix this
+    // @WrapOperation(method = "m_8490_", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;iterateEntities()Ljava/lang/Iterable;"))
+    // private Iterable<Entity> redirectIterateEntities(ServerWorld serverWorld, Operation<Iterable<Entity>> op) {
+    //     final LongSet noTickOnlyChunks = ((IChunkTicketManager) this.ticketManager).getNoTickOnlyChunks();
+    //     if (noTickOnlyChunks == null) return op.call(serverWorld);
+    //     return new FilteringIterable<>(op.call(serverWorld), entity -> !noTickOnlyChunks.contains(entity.getChunkPos().toLong()));
+    // }
 
 }

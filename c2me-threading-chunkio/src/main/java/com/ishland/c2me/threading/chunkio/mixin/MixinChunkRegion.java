@@ -18,17 +18,18 @@ import java.util.concurrent.CompletableFuture;
 @Mixin(ChunkRegion.class)
 public abstract class MixinChunkRegion implements StructureWorldAccess {
 
-    @WrapOperation(method = "setBlockState", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;onBlockChanged(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;)V"))
-    private void waitForFutureBeforeNotifyChanges(ServerWorld instance, BlockPos pos, BlockState oldBlock, BlockState newBlock, Operation<Void> operation) {
-        final Chunk chunk = this.getChunk(pos);
-        if (chunk instanceof ProtoChunk protoChunk) {
-            final CompletableFuture<Void> future = ((ProtoChunkExtension) protoChunk).getInitialMainThreadComputeFuture();
-            if (future != null && !future.isDone()) {
-                future.thenRun(() -> operation.call(instance, pos, oldBlock, newBlock));
-                return;
-            }
-        }
-        operation.call(instance, pos, oldBlock, newBlock);
-    }
+    // TODO: Fix this
+    // @WrapOperation(method = "setBlockState", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;onBlockChanged(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;)V"))
+    // private void waitForFutureBeforeNotifyChanges(ServerWorld instance, BlockPos pos, BlockState oldBlock, BlockState newBlock, Operation<Void> operation) {
+    //     final Chunk chunk = this.getChunk(pos);
+    //     if (chunk instanceof ProtoChunk protoChunk) {
+    //         final CompletableFuture<Void> future = ((ProtoChunkExtension) protoChunk).getInitialMainThreadComputeFuture();
+    //         if (future != null && !future.isDone()) {
+    //             future.thenRun(() -> operation.call(instance, pos, oldBlock, newBlock));
+    //             return;
+    //         }
+    //     }
+    //     operation.call(instance, pos, oldBlock, newBlock);
+    // }
 
 }

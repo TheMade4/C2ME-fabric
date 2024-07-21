@@ -25,15 +25,16 @@ public abstract class MixinChunkHolder {
 
     @Shadow public abstract CompletableFuture<Either<WorldChunk, ChunkHolder.Unloaded>> getEntityTickingFuture();
 
-    @WrapWithCondition(method = "method_31412", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ThreadedAnvilChunkStorage;onChunkStatusChange(Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/server/world/ChunkLevelType;)V"))
-    private boolean ensureChunkStatusBeforeCallback(ThreadedAnvilChunkStorage instance, ChunkPos chunkPos, ChunkLevelType levelType) {
-        return switch (levelType) {
-            case INACCESSIBLE -> true;
-            case FULL -> this.c2me$isStatusReached(this.getAccessibleFuture());
-            case BLOCK_TICKING -> this.c2me$isStatusReached(this.getTickingFuture());
-            case ENTITY_TICKING -> this.c2me$isStatusReached(this.getEntityTickingFuture());
-        };
-    }
+    // TODO: Fix this
+    // @WrapWithCondition(method = "method_31412", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ThreadedAnvilChunkStorage;onChunkStatusChange(Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/server/world/ChunkLevelType;)V"))
+    // private boolean ensureChunkStatusBeforeCallback(ThreadedAnvilChunkStorage instance, ChunkPos chunkPos, ChunkLevelType levelType) {
+    //     return switch (levelType) {
+    //         case INACCESSIBLE -> true;
+    //         case FULL -> this.c2me$isStatusReached(this.getAccessibleFuture());
+    //         case BLOCK_TICKING -> this.c2me$isStatusReached(this.getTickingFuture());
+    //         case ENTITY_TICKING -> this.c2me$isStatusReached(this.getEntityTickingFuture());
+    //     };
+    // }
 
     @Unique
     private boolean c2me$isStatusReached(CompletableFuture<Either<WorldChunk, ChunkHolder.Unloaded>> future) {

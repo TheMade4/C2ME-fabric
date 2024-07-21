@@ -90,13 +90,14 @@ public abstract class MixinThreadedAnvilChunkStorage {
         return this.chunkHolders.get(pos); // thread-safe
     }
 
-    @ModifyReturnValue(method = "convertToFullChunk", at = @At("RETURN"))
-    private CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>> fireFullChunkPostCompleteAsync(CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>> original, ChunkHolder chunkHolder) {
-        if (Config.asyncScheduling) {
-            return original.thenApplyAsync(Function.identity(), r -> ((IVanillaChunkManager) this).c2me$getSchedulingManager().enqueue(chunkHolder.getPos().toLong(), r));
-        } else {
-            return original;
-        }
-    }
+    // TODO: Fix this
+    // @ModifyReturnValue(method = "convertToFullChunk", at = @At("RETURN"))
+    // private CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>> fireFullChunkPostCompleteAsync(CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>> original, ChunkHolder chunkHolder) {
+    //     if (Config.asyncScheduling) {
+    //         return original.thenApplyAsync(Function.identity(), r -> ((IVanillaChunkManager) this).c2me$getSchedulingManager().enqueue(chunkHolder.getPos().toLong(), r));
+    //     } else {
+    //         return original;
+    //     }
+    // }
 
 }

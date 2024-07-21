@@ -16,6 +16,8 @@ import net.minecraft.world.gen.chunk.BlendingData;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(WorldChunk.class)
 public abstract class MixinWorldChunk extends Chunk {
@@ -24,12 +26,10 @@ public abstract class MixinWorldChunk extends Chunk {
         super(pos, upgradeData, heightLimitView, biomeRegistry, inhabitedTime, sectionArray, blendingData);
     }
 
-    @WrapOperation(method = "getPackedBlockEntityNbt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/WorldChunk;getBlockEntity(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/entity/BlockEntity;"))
-    private BlockEntity shortcutPackedBlockEntityNbt(WorldChunk instance, BlockPos pos, Operation<BlockEntity> original) {
+    @Inject(method = "m_8051_", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/WorldChunk;getBlockEntity(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/entity/BlockEntity;"), cancellable = true)
+    private void shortcutPackedBlockEntityNbt(BlockPos pos, CallbackInfoReturnable<BlockEntity> cir) {
         if (!this.blockEntities.containsKey(pos) && this.blockEntityNbts.containsKey(pos)) {
-            return null; // fall back to the original nbt in the original method below
-        } else {
-            return original.call(instance, pos);
+            cir.setReturnValue(null);
         }
     }
 

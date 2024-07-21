@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MinecraftServer.class)
 public abstract class MixinMinecraftServer extends ReentrantThreadExecutor<ServerTask> {
@@ -19,7 +21,7 @@ public abstract class MixinMinecraftServer extends ReentrantThreadExecutor<Serve
 
     @Shadow public abstract Iterable<ServerWorld> getWorlds();
 
-    @Shadow private long tickStartTimeNanos;
+    @Shadow private long timeReference;
 
     public MixinMinecraftServer(String string) {
         super(string);
@@ -27,24 +29,28 @@ public abstract class MixinMinecraftServer extends ReentrantThreadExecutor<Serve
 
     @Unique
     private boolean c2me$shouldKeepSavingChunks() {
-        return this.hasRunningTasks() || Util.getMeasuringTimeNano() < (this.tickStartTimeNanos - 1_000_000L); // reserve 1ms
+        return this.hasRunningTasks() || Util.getMeasuringTimeNano() < ((this.timeReference*1000000L) - 1_000_000L); // reserve 1ms
     }
 
     /**
      * @author ishland
      * @reason improve task execution when waiting for next tick
      */
-    @ModifyReturnValue(method = "runOneTask", at = @At("RETURN"))
-    private boolean postRunTask(boolean original) {
-        if (original) return true;
+    @Inject(method = "runOneTask", at = @At("RETURN"), cancellable = true)
+    private void postRunTask(CallbackInfoReturnable<Boolean> cir) {
+        if (cir.getReturnValue()) {
+            cir.setReturnValue(true);
+            return;
+        }
         if (this.c2me$shouldKeepSavingChunks()) {
             for (ServerWorld serverWorld : this.getWorlds()) {
                 if (((IThreadedAnvilChunkStorage) serverWorld.getChunkManager().threadedAnvilChunkStorage).c2me$runOneChunkAutoSave()) {
-                    return true;
+                    cir.setReturnValue(true);
+                    return;
                 }
             }
         }
-        return false;
+        cir.setReturnValue(false);
     }
 
 }
