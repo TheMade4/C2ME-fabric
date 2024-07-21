@@ -16,7 +16,7 @@ public abstract class MixinServerChunkManager {
 
     @Shadow @Nullable protected abstract ChunkHolder getChunkHolder(long pos);
 
-    @Shadow @Final private ServerChunkManager.MainThreadExecutor mainThreadExecutor;
+    @Shadow @Final public ServerChunkManager.MainThreadExecutor mainThreadExecutor;
 
     /**
      * @author ishland
