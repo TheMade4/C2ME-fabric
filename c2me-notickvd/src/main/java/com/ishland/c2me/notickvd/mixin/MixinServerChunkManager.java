@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ServerChunkManager.class)
 public class MixinServerChunkManager {
@@ -25,12 +26,11 @@ public class MixinServerChunkManager {
 //        return chunkHolder.getAccessibleFuture();
 //    }
 
-    // TODO: Fix this
-    // @WrapOperation(method = "m_8490_", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;iterateEntities()Ljava/lang/Iterable;"))
-    // private Iterable<Entity> redirectIterateEntities(ServerWorld serverWorld, Operation<Iterable<Entity>> op) {
-    //     final LongSet noTickOnlyChunks = ((IChunkTicketManager) this.ticketManager).getNoTickOnlyChunks();
-    //     if (noTickOnlyChunks == null) return op.call(serverWorld);
-    //     return new FilteringIterable<>(op.call(serverWorld), entity -> !noTickOnlyChunks.contains(entity.getChunkPos().toLong()));
-    // }
+    @Redirect(method = "tickChunks()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;iterateEntities()Ljava/lang/Iterable;"))
+    private Iterable<Entity> redirectIterateEntities(ServerWorld serverWorld) {
+        final LongSet noTickOnlyChunks = ((IChunkTicketManager) this.ticketManager).getNoTickOnlyChunks();
+        if (noTickOnlyChunks == null) return serverWorld.iterateEntities();
+        return new FilteringIterable<>(serverWorld.iterateEntities(), entity -> !noTickOnlyChunks.contains(entity.getChunkPos().toLong()));
+    }
 
 }

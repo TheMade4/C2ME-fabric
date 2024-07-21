@@ -51,6 +51,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.nio.file.Path;
 import java.util.BitSet;
@@ -267,26 +268,24 @@ public abstract class MixinThreadedAnvilChunkStorage extends VersionedChunkStora
         });
     }
 
-    // TODO: Fix this
-    // @ModifyReturnValue(method = "getChunk", at = @At("RETURN"))
-    // private CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>> postGetChunk(CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>> originalReturn, ChunkHolder holder, ChunkStatus requiredStatus) {
-    //     if (requiredStatus == ChunkStatus.FULL.getPrevious()) {
-    //         // wait for initial main thread tasks before proceeding to finish full chunk
-    //         return originalReturn.thenCompose(either -> {
-    //             if (either.left().isPresent()) {
-    //                 final Chunk chunk = either.left().get();
-    //                 if (chunk instanceof ProtoChunk protoChunk) {
-    //                     final CompletableFuture<Void> future = ((ProtoChunkExtension) protoChunk).getInitialMainThreadComputeFuture();
-    //                     if (future != null) {
-    //                         return future.thenApply(v -> either);
-    //                     }
-    //                 }
-    //             }
-    //             return CompletableFuture.completedFuture(either);
-    //         });
-    //     }
-    //     return originalReturn;
-    // }
+    @Inject(method = "getChunk", at = @At("RETURN"), cancellable = true)
+    private void postGetChunk(ChunkHolder holder, ChunkStatus requiredStatus, CallbackInfoReturnable<CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>>> cir) {
+        if (requiredStatus == ChunkStatus.FULL.getPrevious()) {
+            // wait for initial main thread tasks before proceeding to finish full chunk
+            cir.setReturnValue(cir.getReturnValue().thenCompose(either -> {
+                if (either.left().isPresent()) {
+                    final Chunk chunk = either.left().get();
+                    if (chunk instanceof ProtoChunk protoChunk) {
+                        final CompletableFuture<Void> future = ((ProtoChunkExtension) protoChunk).getInitialMainThreadComputeFuture();
+                        if (future != null) {
+                            return future.thenApply(v -> either);
+                        }
+                    }
+                }
+                return CompletableFuture.completedFuture(either);
+            }));
+        }
+    }
 
     private ConcurrentLinkedQueue<CompletableFuture<Void>> saveFutures = new ConcurrentLinkedQueue<>();
 

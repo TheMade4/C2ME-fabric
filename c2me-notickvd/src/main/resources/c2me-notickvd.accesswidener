@@ -1,4 +1,3 @@
 accessWidener v1 named
 
 accessible    class    net/minecraft/server/world/ChunkTicketManager$NearbyChunkTicketUpdater
-accessible    method   net/minecraft/server/world/ThreadedAnvilChunkStorage method_17243 (Lorg/apache/commons/lang3/mutable/MutableObject;Lnet/minecraft/world/chunk/WorldChunk;Lnet/minecraft/server/network/ServerPlayerEntity;)V

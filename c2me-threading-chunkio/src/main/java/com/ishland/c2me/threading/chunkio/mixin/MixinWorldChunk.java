@@ -1,7 +1,5 @@
 package com.ishland.c2me.threading.chunkio.mixin;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.math.BlockPos;

@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -25,16 +27,17 @@ public abstract class MixinChunkHolder {
 
     @Shadow public abstract CompletableFuture<Either<WorldChunk, ChunkHolder.Unloaded>> getEntityTickingFuture();
 
-    // TODO: Fix this
-    // @WrapWithCondition(method = "method_31412", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ThreadedAnvilChunkStorage;onChunkStatusChange(Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/server/world/ChunkLevelType;)V"))
-    // private boolean ensureChunkStatusBeforeCallback(ThreadedAnvilChunkStorage instance, ChunkPos chunkPos, ChunkLevelType levelType) {
-    //     return switch (levelType) {
-    //         case INACCESSIBLE -> true;
-    //         case FULL -> this.c2me$isStatusReached(this.getAccessibleFuture());
-    //         case BLOCK_TICKING -> this.c2me$isStatusReached(this.getTickingFuture());
-    //         case ENTITY_TICKING -> this.c2me$isStatusReached(this.getEntityTickingFuture());
-    //     };
-    // }
+    @Inject(method = "method_31412", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ThreadedAnvilChunkStorage;onChunkStatusChange(Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/server/world/ChunkLevelType;)V"))
+    private void ensureChunkStatusBeforeCallback(ThreadedAnvilChunkStorage chunkPos, ChunkLevelType levelType, CallbackInfo ci) {
+        if (!(switch (levelType) {
+            case INACCESSIBLE -> true;
+            case FULL -> this.c2me$isStatusReached(this.getAccessibleFuture());
+            case BLOCK_TICKING -> this.c2me$isStatusReached(this.getTickingFuture());
+            case ENTITY_TICKING -> this.c2me$isStatusReached(this.getEntityTickingFuture());
+        })) {
+            ci.cancel();
+        };
+    }
 
     @Unique
     private boolean c2me$isStatusReached(CompletableFuture<Either<WorldChunk, ChunkHolder.Unloaded>> future) {
