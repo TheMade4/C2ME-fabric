@@ -3,12 +3,11 @@ package com.ishland.c2me.threading.worldgen.mixin;
 import com.ishland.c2me.base.common.scheduler.IVanillaChunkManager;
 import com.ishland.c2me.base.common.scheduler.ThreadLocalWorldGenSchedulingState;
 import com.ishland.c2me.threading.worldgen.common.Config;
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.datafixers.util.Either;
 import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
 import net.minecraft.server.world.ChunkHolder;
 import net.minecraft.server.world.ThreadedAnvilChunkStorage;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.thread.ThreadExecutor;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkStatus;
@@ -25,7 +24,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 
@@ -53,17 +51,20 @@ public abstract class MixinThreadedAnvilChunkStorage {
         runnable.run();
     }
 
-    @Inject(method = "lambda$scheduleChunkGeneration$27(Lnet/minecraft/world/level/chunk/ChunkStatus;Lnet/minecraft/server/level/ChunkHolder;Ljava/util/concurrent/Executor;Lnet/minecraft/world/level/ChunkPos;Ljava/util/List;)Ljava/util/concurrent/CompletableFuture;", at = @At("HEAD"))
-    private void captureUpgradingChunkHolder(ChunkStatus chunkStatus, ChunkHolder chunkHolder, Executor executor, ChunkPos chunkPos, List<Chunk> chunks, CallbackInfoReturnable<CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>>> cir) {
+    @Dynamic
+    @Inject(method = {"method_17225", "lambda$scheduleChunkGeneration$27"}, at = @At("HEAD"))
+    private void captureUpgradingChunkHolder(CallbackInfoReturnable<CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>>> cir, @Local(argsOnly = true) ChunkHolder chunkHolder) {
         ThreadLocalWorldGenSchedulingState.setChunkHolder(chunkHolder);
     }
 
-    @Inject(method = "lambda$scheduleChunkGeneration$27(Lnet/minecraft/world/level/chunk/ChunkStatus;Lnet/minecraft/server/level/ChunkHolder;Ljava/util/concurrent/Executor;Lnet/minecraft/world/level/ChunkPos;Ljava/util/List;)Ljava/util/concurrent/CompletableFuture;", at = @At("RETURN"))
+    @Dynamic
+    @Inject(method = {"method_17225", "lambda$scheduleChunkGeneration$27"}, at = @At("RETURN"))
     private void resetUpgradingChunkHolder(CallbackInfoReturnable<CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>>> cir) {
         ThreadLocalWorldGenSchedulingState.clearChunkHolder();
     }
 
-    @Inject(method = "lambda$scheduleChunkGeneration$27(Lnet/minecraft/world/level/chunk/ChunkStatus;Lnet/minecraft/server/level/ChunkHolder;Ljava/util/concurrent/Executor;Lnet/minecraft/world/level/ChunkPos;Ljava/util/List;)Ljava/util/concurrent/CompletableFuture;", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/crash/CrashReport;create(Ljava/lang/Throwable;Ljava/lang/String;)Lnet/minecraft/util/crash/CrashReport;", shift = At.Shift.BEFORE))
+    @Dynamic
+    @Inject(method = {"method_17225", "lambda$scheduleChunkGeneration$27"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/util/crash/CrashReport;create(Ljava/lang/Throwable;Ljava/lang/String;)Lnet/minecraft/util/crash/CrashReport;", shift = At.Shift.BEFORE))
     private void resetUpgradingChunkHolderExceptionally(CallbackInfoReturnable<CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>>> cir) {
         ThreadLocalWorldGenSchedulingState.clearChunkHolder();
     }
@@ -90,7 +91,6 @@ public abstract class MixinThreadedAnvilChunkStorage {
         return this.chunkHolders.get(pos); // thread-safe
     }
 
-    // TODO: Fix this
     @Inject(method = "convertToFullChunk", at = @At("RETURN"), cancellable = true)
     private void fireFullChunkPostCompleteAsync(ChunkHolder chunkHolder, CallbackInfoReturnable<CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>>> cir) {
         if (Config.asyncScheduling) {
