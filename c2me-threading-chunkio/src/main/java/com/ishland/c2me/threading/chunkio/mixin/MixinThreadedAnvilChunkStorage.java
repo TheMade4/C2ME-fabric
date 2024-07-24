@@ -137,7 +137,7 @@ public abstract class MixinThreadedAnvilChunkStorage extends VersionedChunkStora
      * @reason async io and deserialization
      */
     @Overwrite
-    public CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>> loadChunk(ChunkPos pos) {
+    private CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>> loadChunk(ChunkPos pos) {
         if (scheduledChunks == null) scheduledChunks = new HashSet<>();
         synchronized (scheduledChunks) {
             if (scheduledChunks.contains(pos)) throw new IllegalArgumentException("Already scheduled");

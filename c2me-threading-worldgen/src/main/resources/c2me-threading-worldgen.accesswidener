@@ -3,4 +3,3 @@ accessWidener v1 named
 accessible    class    net/minecraft/world/chunk/ChunkStatus$GenerationTask
 accessible    class    net/minecraft/server/world/ChunkTicketManager$DistanceFromNearestPlayerTracker
 accessible    class    net/minecraft/server/world/ChunkTicketManager$NearbyChunkTicketUpdater
-accessible    method   net/minecraft/server/world/ThreadedAnvilChunkStorage method_17259 (Lnet/minecraft/server/world/ChunkHolder;Ljava/lang/Runnable;)V
