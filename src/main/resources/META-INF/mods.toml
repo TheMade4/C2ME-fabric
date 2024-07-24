@@ -1,0 +1,34 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="CC0-1.0"
+ 
+[properties]
+"connector:placeholder"=true
+ 
+[[mods]]
+modId="c3me"
+version="0.2.0-c3me-alpha.11.52-dirty"
+displayName="Connectored Concurrent Chunk Management Engine"
+authors="RelativityMC & ishland"
+description='''A Fabric mod designed to improve the chunk performance of Minecraft.'''
+ 
+[[dependencies.c3me]]
+modId="forge"
+mandatory=true
+versionRange="[47,)"
+ordering="NONE"
+side="BOTH"
+ 
+[[dependencies.c3me]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1]"
+ordering="NONE"
+side="BOTH"
+ 
+[[dependencies.c3me]]
+modId="connectormod"
+mandatory=true
+versionRange="*"
+ordering="NONE"
+side="BOTH"

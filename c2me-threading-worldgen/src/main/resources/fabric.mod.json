@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "c2me-threading-worldgen",
   "version": "${version}",
-  "name": "Concurrent Chunk Management Engine (Threading/WorldGen)",
+  "name": "Connectored Concurrent Chunk Management Engine (Threading/WorldGen)",
   "description": "Threaded WorldGen module",
   "environment": "*",
   "mixins": [
@@ -23,8 +23,8 @@
     "ishland"
   ],
   "contact": {
-    "sources": "https://github.com/RelativityMC/C2ME-fabric",
-    "issues": "https://github.com/RelativityMC/C2ME-fabric/issues",
+    "sources": "https://github.com/coco875/C2ME-fabric",
+    "issues": "https://github.com/coco875/C2ME-fabric/issues",
     "discord": "https://discord.io/ishlandbukkit",
     "homepage": "https://modrinth.com/mod/c2me-fabric"
   },

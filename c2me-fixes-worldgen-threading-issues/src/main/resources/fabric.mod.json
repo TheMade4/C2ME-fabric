@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "c2me-fixes-worldgen-threading-issues",
   "version": "${version}",
-  "name": "Concurrent Chunk Management Engine (Fixes/WorldGen/Threading Issues)",
+  "name": "Connectored Concurrent Chunk Management Engine (Fixes/WorldGen/Threading Issues)",
   "description": "Fixes threading issues for vanilla world generation code",
   "environment": "*",
   "mixins": [
@@ -21,8 +21,8 @@
     "ishland"
   ],
   "contact": {
-    "sources": "https://github.com/RelativityMC/C2ME-fabric",
-    "issues": "https://github.com/RelativityMC/C2ME-fabric/issues",
+    "sources": "https://github.com/coco875/C2ME-fabric",
+    "issues": "https://github.com/coco875/C2ME-fabric/issues",
     "discord": "https://discord.io/ishlandbukkit",
     "homepage": "https://modrinth.com/mod/c2me-fabric"
   },

@@ -1,8 +1,8 @@
-<img width="200" src="https://github.com/RelativityMC/C2ME-fabric/raw/ver/1.17/src/main/resources/assets/c2me/icon.png" alt="C2ME icon" align="right">
+<img width="200" src="https://github.com/coco875/C2ME-fabric/raw/ver/1.17/src/main/resources/assets/c2me/icon.png" alt="C2ME icon" align="right">
 <div align="left">
 <h1>C^2M-Engine</h1>
 
-[![Github-CI](https://github.com/RelativityMC/C2ME-fabric/workflows/C2ME%20Build%20Script/badge.svg)](https://github.com/RelativityMC/C2ME-fabric/actions?query=workflow%3ACI)
+[![Github-CI](https://github.com/coco875/C2ME-fabric/workflows/C2ME%20Build%20Script/badge.svg)](https://github.com/coco875/C2ME-fabric/actions?query=workflow%3ACI)
 [![Build Status](https://ci.codemc.io/job/RelativityMC/job/C2ME-fabric/job/ver%252F1.18/badge/icon)](https://ci.codemc.io/job/RelativityMC/job/C2ME-fabric/job/ver%252F1.18/)
 [![Discord](https://img.shields.io/discord/756715786747248641?logo=discord&logoColor=white)](https://discord.io/ishlandbukkit)
 <h3>A Fabric mod designed to improve the chunk performance of Minecraft.</h3>
@@ -28,7 +28,7 @@ So backup your worlds and practice good game modding skills.
 
 
 ## Downloads
-You can find semi-stable releases here: https://github.com/RelativityMC/C2ME-fabric/releases  
+You can find semi-stable releases here: https://github.com/coco875/C2ME-fabric/releases  
 
 ### Development builds
 **Note: Development builds may modify the config files in a way unreadable by previous versions. You may encounter crashes or config reset when rolling back to previous versions. Please always backup your config.**
@@ -38,7 +38,7 @@ Note that these builds may contain more bugfixes and performance improvements bu
 If you have encountered any problems in release builds, give development builds a try before reporting.
 
 ## Support
-Our issue tracker: [link](https://github.com/RelativityMC/C2ME-fabric/issues)  
+Our issue tracker: [link](https://github.com/coco875/C2ME-fabric/issues)  
 Our discord server: [link](https://discord.io/ishlandbukkit)
 
 ## Building and setting up
