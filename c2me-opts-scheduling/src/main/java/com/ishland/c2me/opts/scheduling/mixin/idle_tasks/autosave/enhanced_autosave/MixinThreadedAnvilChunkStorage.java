@@ -6,7 +6,12 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.objects.ObjectBidirectionalIterator;
 import it.unimi.dsi.fastutil.objects.ObjectCollection;
 import net.minecraft.server.world.ChunkHolder;
+<<<<<<< HEAD
 import net.minecraft.server.world.ThreadedAnvilChunkStorage;
+=======
+import net.minecraft.server.world.ServerChunkLoadingManager;
+import net.minecraft.server.world.ServerWorld;
+>>>>>>> f5d31bda (fix: respect isSavingDisabled in enhanced autosave)
 import net.minecraft.util.thread.ThreadExecutor;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,45 +36,37 @@ public abstract class MixinThreadedAnvilChunkStorage implements IThreadedAnvilCh
 
     @Shadow @Final private ThreadExecutor<Runnable> mainThreadExecutor;
 
-    @Redirect(method = "save(Z)V", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/ObjectCollection;forEach(Ljava/util/function/Consumer;)V", ordinal = 0))
-    private void onSaveAllChunks(ObjectCollection<ChunkHolder> instance, Consumer<ChunkHolder> consumer) {
-        int saveAllCounter = 0;
-        for (ChunkHolder holder : instance) {
-            if (this.save(holder)) {
-                System.out.println("[Save-All] Saved " + holder.getPos());
-                saveAllCounter++;
-            }
-        }
-
-        System.out.println("[Save-All] Saved " + saveAllCounter + " chunks!");
-    }
-
+    @Shadow @Final private ServerWorld world;
     @Unique
-    private static final int c2me$maxSearchPerCall = 128;
-
+    private static final int c2me$maxSearchPerCall = 128;    
+    
     @Unique
     private ObjectBidirectionalIterator<Long2ObjectMap.Entry<ChunkHolder>> c2me$saveChunksIterator;
     @Unique
     private int c2me$saveChunksIteratorHash = 0;
-
+    
     @Inject(method = "tick", at = @At("RETURN"))
     private void onTick(CallbackInfo ci) {
         if (this.c2me$saveChunksIterator == null || !this.c2me$saveChunksIterator.hasNext()) {
             c2me$enhancedAutoSaveUpdateIterator();
         }
     }
-
+    
     @Unique
     @Override
     public boolean c2me$runOneChunkAutoSave() {
         if (!this.mainThreadExecutor.isOnThread()) {
             throw new ConcurrentModificationException("runOneChunkAutoSave called async");
         }
-
+        
+        if (this.world.isSavingDisabled()) {
+            return false;
+        }
+        
         if (this.c2me$saveChunksIteratorHash != System.identityHashCode(this.chunkHolders) || this.c2me$saveChunksIterator == null) {
             c2me$enhancedAutoSaveUpdateIterator();
         }
-
+        
         int i = 0;
         final ObjectBidirectionalIterator<Long2ObjectMap.Entry<ChunkHolder>> iterator = this.c2me$saveChunksIterator;
         while (iterator.hasNext() && (i ++) < c2me$maxSearchPerCall) {
@@ -82,7 +79,7 @@ public abstract class MixinThreadedAnvilChunkStorage implements IThreadedAnvilCh
                 return true;
             }
         }
-
+        
         return false;
     }
 
