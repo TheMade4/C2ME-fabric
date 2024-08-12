@@ -6,12 +6,8 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.objects.ObjectBidirectionalIterator;
 import it.unimi.dsi.fastutil.objects.ObjectCollection;
 import net.minecraft.server.world.ChunkHolder;
-<<<<<<< HEAD
 import net.minecraft.server.world.ThreadedAnvilChunkStorage;
-=======
-import net.minecraft.server.world.ServerChunkLoadingManager;
 import net.minecraft.server.world.ServerWorld;
->>>>>>> f5d31bda (fix: respect isSavingDisabled in enhanced autosave)
 import net.minecraft.util.thread.ThreadExecutor;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
