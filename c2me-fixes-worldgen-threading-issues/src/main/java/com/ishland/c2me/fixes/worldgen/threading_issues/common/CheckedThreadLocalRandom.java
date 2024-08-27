@@ -32,6 +32,9 @@ public class CheckedThreadLocalRandom extends LocalRandom {
     }
 
     private boolean isSafe() {
+        if (Thread.currentThread().getName() == "VirtualMachine Runner") {
+            return true;
+        }
         Thread owner = this.owner != null ? this.owner.get() : null;
         boolean notOwner = owner != null && Thread.currentThread() != owner;
         if (notOwner) {
